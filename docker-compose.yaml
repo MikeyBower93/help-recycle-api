@@ -1,0 +1,25 @@
+# docker-compose.yml
+version: "3"
+services:
+  app:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://user:pass@postgres:5432/help_recycle
+      NODE_ENV: development
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    command: "npm run start:dev"
+    volumes:
+      - .:/usr/src/app
+
+  postgres:
+    image: postgres:13.1
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: help_recycle
