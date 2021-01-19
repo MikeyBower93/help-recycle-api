@@ -6,7 +6,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://user:pass@postgres:5432/help_recycle
+      DATABASE_URL: postgres://help_recycle_user:password@postgres:5432/help_recycle
       NODE_ENV: development
       PORT: 8080
     ports:
@@ -16,10 +16,10 @@ services:
       - .:/usr/src/app
 
   postgres:
-    image: postgres:13.1
+    image: postgres:12.5
     ports:
       - "35432:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: help_recycle_user
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: help_recycle
