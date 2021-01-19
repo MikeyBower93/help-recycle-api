@@ -4,7 +4,6 @@ RUN mkdir -p usr/src/app/node_modules && mkdir -p usr/src/app/dist
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install 
-RUN npm install -g typescript
 COPY . . 
 RUN tsc
 CMD ["npm", "run", "start:production"]
