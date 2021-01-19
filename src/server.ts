@@ -3,7 +3,7 @@ import express from 'express';
 const app = express();
 
 app.get('/', (_request: express.Request, response: express.Response) => {
-	response.send('hello world from beanstalk 4');
+	response.send('hello world from beanstalk 5');
 });
 
 app.listen(

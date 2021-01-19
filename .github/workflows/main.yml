@@ -22,7 +22,7 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: help-recycle-api
         environment_name: HelpRecycleApi-env
-        version_label: 5
+        version_label: 6
         region: eu-west-2
         deployment_package: deploy.zip
         use_existing_version_if_available: true
