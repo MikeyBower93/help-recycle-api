@@ -8,20 +8,23 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://help_recycle_user:password@postgres:5432/help_recycle
+      RDS_HOSTNAME: postgres
+      RDS_PORT: 5432
+      RDS_DB_NAME: db
+      RDS_USERNAME: user
+      RDS_PASSWORD: pass
       NODE_ENV: development
       PORT: 8080
     ports:
       - "8080:8080"
     command: "npm run start:dev"
     volumes:
-      - .:/usr/src/app
-
+      - .:/usr/src/app 
   postgres:
     image: postgres:12.5
     ports:
       - "35432:5432"
     environment:
-      POSTGRES_USER: help_recycle_user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: help_recycle
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db

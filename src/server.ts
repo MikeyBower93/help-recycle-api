@@ -1,9 +1,12 @@
 import express from 'express';
+import knex from './knex/knex';
 
 const app = express();
 
-app.get('/', (_request: express.Request, response: express.Response) => {
-	response.send('hello world from beanstalk 5');
+app.get('/', async (_request: express.Request, response: express.Response) => {
+  const users = await knex.from('users').select('firstName', 'lastName', 'email');
+
+  response.json(users);
 });
 
 app.listen(
