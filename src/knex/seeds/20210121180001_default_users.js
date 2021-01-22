@@ -5,8 +5,8 @@ exports.seed = function(knex) {
       return knex('users').insert([
         {
           email: 'mikey.bower93@gmail.com',
-          firstName: 'Mike',
-          lastName: 'Bower',
+          first_name: 'Mike',
+          last_name: 'Bower',
           password_hash: '$2y$10$7o9QFlvbAGzcUIX/ftZtIe1SJQPxKXLmSbSvSkygiTkfhq7DrUXfC'
         }, 
       ]);

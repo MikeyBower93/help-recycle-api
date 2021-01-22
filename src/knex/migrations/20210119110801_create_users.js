@@ -3,8 +3,8 @@ exports.up = function(knex, _Promise) {
     t.increments('id').unsigned().primary(); 
     t.string('password_hash').notNullable();
     t.string('email').notNullable();
-    t.string('firstName').notNullable();  
-    t.string('lastName').notNullable();  
+    t.string('first_name').notNullable();  
+    t.string('last_name').notNullable();  
   });
 };
 
