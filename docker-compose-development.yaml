@@ -14,6 +14,7 @@ services:
       RDS_USERNAME: user
       RDS_PASSWORD: pass
       NODE_ENV: development
+      JWT_SECRET: secret
       PORT: 8080
     ports:
       - "8080:8080"
