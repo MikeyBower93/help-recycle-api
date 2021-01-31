@@ -14,7 +14,7 @@ enum LoginResponseCode {
 	the controller.
 */
 class Domain {
-	private async getUserByEmail(email: string): Promise<User | null> {
+	public async findUserByEmail(email: string): Promise<User | null> {
 		return await knex
 		.from('users')
 		.where('email', email)
@@ -35,7 +35,7 @@ class Domain {
 	public async loginUser(
 		loginRequest: LoginRequest
 	): Promise<{responseCode: LoginResponseCode, user: User | null, token: string | null}> {
-		const user = await this.getUserByEmail(loginRequest.email);
+		const user = await this.findUserByEmail(loginRequest.email);
 
 		// First attempt to check the user exists by the email.
 		if(!user) {

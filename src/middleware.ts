@@ -1,5 +1,8 @@
 import express from 'express';
 import Joi from 'joi';
+import jwt from 'jsonwebtoken'; 
+import accountDomain from './accounts/domain';
+import { User } from './accounts/models';
 
 /* 
 	Validate the incoming request body to ensure it meets the model type definition
@@ -17,5 +20,26 @@ const requestBodyTypeValidationMiddleware = (schema: Joi.Schema) => {
 		} 
 	}
 };
+
+const requiresAuthenticatedUserMiddleware = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
+	const bearer = request.headers.authorization;
+ 
+	if(bearer) {
+		try {
+			const decodedJwt = jwt.verify(bearer, process.env.JWT_SECRET as string) as any;
+  
+			request.user = await accountDomain.findUserByEmail(decodedJwt.email) as User;
+
+			next();
+		} catch { 
+			response.status(401).end();
+		}
+	} else {
+		response.status(401).end();
+	} 
+};
 	
-export {requestBodyTypeValidationMiddleware};
+export {
+	requestBodyTypeValidationMiddleware,
+	requiresAuthenticatedUserMiddleware
+};
