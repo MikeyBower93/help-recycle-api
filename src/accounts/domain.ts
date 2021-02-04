@@ -14,6 +14,14 @@ enum LoginResponseCode {
 	the controller.
 */
 class Domain {
+	private async authenticateUser(user: User, password: string): Promise<boolean> {
+		return await bcrypt.compare(password, user.password_hash);
+	}
+
+	private async signUser(user: User): Promise<string> {
+		return await jwt.sign({email: user.email}, process.env.JWT_SECRET as string);
+	}
+
 	public async findUserByEmail(email: string): Promise<User | null> {
 		return await knex
 		.from('users')
@@ -22,12 +30,15 @@ class Domain {
 		.first();
 	}
 
-	private async authenticateUser(user: User, password: string): Promise<boolean> {
-		return await bcrypt.compare(password, user.password_hash);
-	}
+	public async verifyUserByToken(token: string): Promise<{user: User | null, valid: boolean}> {
+		const decodedJwt = jwt.verify(token, process.env.JWT_SECRET as string) as any;
+  
+		const user = await this.findUserByEmail(decodedJwt.email);
 
-	private async signUser(user: User): Promise<string> {
-		return await jwt.sign({email: user.email}, process.env.JWT_SECRET as string);
+		return {
+			user,
+			valid: user ? true : false
+		}
 	}
 
 	// Takes in a login request (essentially an email and raw password), authenticates the user

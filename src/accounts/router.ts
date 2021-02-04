@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
 	'/login', 
 	requestBodyTypeValidationMiddleware(LoginRequestSchema),
-	async (request: Request<{}, {}, LoginRequest, {}, {}>, response: Response) => {  
+	async (request: Request<{}, {}, LoginRequest, {}, {}>, response: Response) => { 
 		const {responseCode, user, token} = await accountDomain.loginUser(request.body);
 
 		switch(responseCode) {

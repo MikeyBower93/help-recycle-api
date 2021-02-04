@@ -1,13 +1,18 @@
 import express, {Request, Response} from 'express';
-import {requiresAuthenticatedUserMiddleware} from '../middleware';
+import recommendationDomain from './domain';
 
 const router = express.Router();
  
 router.get(
-	'/test', 
-	requiresAuthenticatedUserMiddleware,
-	async (request: Request, response: Response) => {  
-		response.send(`hello ${request.user?.email} you are authenticated.`);
+	'/',
+	async (_request: Request, response: Response) => {  
+		try {
+			const recommendations = await recommendationDomain.fetchRecommendations();
+
+			response.json(recommendations);
+		} catch(error) {
+			console.error(error);
+		}
 	}
 );
 

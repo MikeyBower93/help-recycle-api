@@ -14,13 +14,6 @@ At the root level we have the basic server where express is initialised, along w
 - `[DOMAIN_TYPE]/models.ts` - underlying data models for that domain.
 - `[DOMAIN_TYPE]/router.ts` - the web express entrypoint for that domain.
 
-# Helpful Commands
 
-## Authenticate User 
-
-`curl -d '{"email": "email", "password":"password"}' -H "Content-Type: application/json" -X POST http://localhost:8080/accounts/login`
-
-# Todos
-
-- Authenticated user routes
 - Recommendations domain for recommendations for a recycling type, and the recommender (user)
+- votes on the recommendation by a voter, either up or down

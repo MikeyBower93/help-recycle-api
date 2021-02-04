@@ -25,14 +25,13 @@ const requiresAuthenticatedUserMiddleware = async (request: express.Request, res
 	const bearer = request.headers.authorization;
  
 	if(bearer) {
-		try {
-			const decodedJwt = jwt.verify(bearer, process.env.JWT_SECRET as string) as any;
-  
-			request.user = await accountDomain.findUserByEmail(decodedJwt.email) as User;
+		const {valid, user} = await accountDomain.verifyUserByToken(bearer);
 
-			next();
-		} catch { 
+		if(!valid) { 
 			response.status(401).end();
+		} else {
+			request.user = user as User;
+			next();
 		}
 	} else {
 		response.status(401).end();
