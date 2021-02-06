@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import {requestBodyTypeValidationMiddleware} from '../middleware'; 
+import {requestTypeValidationMiddleware, RequestValidationProperty} from '../middleware'; 
 import {LoginRequest, LoginRequestSchema} from './dtos'; 
 import accountDomain, {LoginResponseCode} from './domain';
 
@@ -7,7 +7,7 @@ const router = express.Router();
  
 router.post(
   '/login', 
-  requestBodyTypeValidationMiddleware(LoginRequestSchema),
+  requestTypeValidationMiddleware(RequestValidationProperty.Body, LoginRequestSchema),
   async (request: Request<{}, {}, LoginRequest, {}, {}>, response: Response) => { 
     const {responseCode, user, token} = await accountDomain.loginUser(request.body);
 

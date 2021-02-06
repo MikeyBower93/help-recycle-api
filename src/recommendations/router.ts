@@ -1,26 +1,24 @@
 import express, {Request, Response} from 'express';
-import {requestBodyTypeValidationMiddleware} from '../middleware';
+import {requestTypeValidationMiddleware, RequestValidationProperty} from '../middleware';
 import {RecommendationSchema, Recommendation} from "./models"; 
 import recommendationDomain from './domain';
+import {RecommendationQueryParameters, RecommendationQueryParametersSchema} from './dtos';
 
 const router = express.Router();
  
 router.get(
   '/',
-  async (_request: Request, response: Response) => {  
-    try {
-      const recommendations = await recommendationDomain.fetchRecommendations();
+  requestTypeValidationMiddleware(RequestValidationProperty.Query, RecommendationQueryParametersSchema),
+  async (request: Request<{}, {}, {}, RecommendationQueryParameters, {}>, response: Response) => {  
+    const recommendations = await recommendationDomain.fetchRecommendations(request.query);
 
-      response.json(recommendations);
-    } catch(error) {
-      console.error(error);
-    }
+    response.json(recommendations);
   }
 );
 
 router.put(
   '/',
-  requestBodyTypeValidationMiddleware(RecommendationSchema),
+  requestTypeValidationMiddleware(RequestValidationProperty.Body, RecommendationSchema),
   async (request : Request<{}, {}, Recommendation, {}, {}>, response :Response) => {
     const newRecommendation = await recommendationDomain.addOrUpdateRecommendation(request.body, request.user);
 

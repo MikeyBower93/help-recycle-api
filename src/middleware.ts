@@ -4,13 +4,29 @@ import jwt from 'jsonwebtoken';
 import accountDomain from './accounts/domain';
 import { User } from './accounts/models';
 
+enum RequestValidationProperty {
+  Body,
+  Query
+}
+
 /* 
   Validate the incoming request body to ensure it meets the model type definition
   if it doesn't it will return a bad request. 
 */
-const requestBodyTypeValidationMiddleware = (schema: Joi.Schema) => {
+const requestTypeValidationMiddleware = (property: RequestValidationProperty, schema: Joi.Schema) => {
   return (request: express.Request, response: express.Response, next: express.NextFunction) => {
-    const { error } = schema.validate(request.body); 
+    let value = null;
+
+    switch (property) {
+      case RequestValidationProperty.Body:
+        value = request.body;
+        break;
+      case RequestValidationProperty.Query:
+        value = request.query;
+        break;
+    }
+
+    const { error } = schema.validate(value); 
     const valid = error == null; 
     if (valid) { 
       next(); 
@@ -39,6 +55,7 @@ const requiresAuthenticatedUserMiddleware = async (request: express.Request, res
 };
   
 export {
-  requestBodyTypeValidationMiddleware,
+  RequestValidationProperty,
+  requestTypeValidationMiddleware,
   requiresAuthenticatedUserMiddleware
 };

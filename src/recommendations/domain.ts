@@ -1,14 +1,25 @@
 import knex from '../knex/knex'; 
 import {Recommendation} from './models';
 import { User } from '../accounts/models';
+import {RecommendationQueryParameters} from './dtos';
  
 /*
   Store the core domain/business logic rules in here which is the entrance point for
   the controller.
 */
 class Domain {  
-  public async fetchRecommendations(): Promise<Recommendation[]> {
-    return await knex.from<Recommendation>('recommendations');
+  public async fetchRecommendations(filters: RecommendationQueryParameters): Promise<Recommendation[]> {
+    const query = knex.from('recommendations');
+
+    if(filters.location) {
+      query.where('location', filters.location);
+    }
+
+    if(filters.recycling_type) {
+      query.where('recycling_type', filters.recycling_type);
+    }
+
+    return await query.returning<Recommendation[]>('*');
   }
 
   public async addOrUpdateRecommendation(recommendation: Recommendation, user: User): Promise<Recommendation> {
