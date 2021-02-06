@@ -7,15 +7,15 @@ const router = express.Router();
  
 router.get(
   '/',
-	async (_request: Request, response: Response) => {  
-		try {
-			const recommendations = await recommendationDomain.fetchRecommendations();
+  async (_request: Request, response: Response) => {  
+    try {
+      const recommendations = await recommendationDomain.fetchRecommendations();
 
-			response.json(recommendations);
-		} catch(error) {
-			console.error(error);
-		}
-	}
+      response.json(recommendations);
+    } catch(error) {
+      console.error(error);
+    }
+  }
 );
 
 router.put(

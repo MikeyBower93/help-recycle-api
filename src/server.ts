@@ -11,5 +11,5 @@ app.use('/accounts', accountsRouter);
 app.use('/recommendations', requiresAuthenticatedUserMiddleware, recommendationsRouter);
 
 app.listen(
-	process.env.PORT || 8080
+  process.env.PORT || 8080
 )
