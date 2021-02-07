@@ -1,5 +1,5 @@
 import knex from '../knex/knex'; 
-import {Recommendation} from './models';
+import {Recommendation, Vote} from './models';
 import { User } from '../accounts/models';
 import {RecommendationQueryParameters} from './dtos';
  
@@ -8,6 +8,13 @@ import {RecommendationQueryParameters} from './dtos';
   the controller.
 */
 class Domain {  
+  public async getRecommendationById(id: number): Promise<Recommendation> {
+    return await knex.from('recommendations')
+      .where('id', id)
+      .first()
+      .returning<Recommendation>('*')
+  }
+
   public async fetchRecommendations(filters: RecommendationQueryParameters): Promise<Recommendation[]> {
     const query = knex.from('recommendations');
 
@@ -33,9 +40,7 @@ class Domain {
       .first()
       .returning<Recommendation>('*');
 
-    if(existingRecommendation) {
-      existingRecommendation.instructions = recommendation.instructions;
-
+    if(existingRecommendation) { 
       return await knex('recommendations')
         .where('id', existingRecommendation.id)
         .update({
@@ -48,6 +53,32 @@ class Domain {
       return await knex('recommendations')
         .insert(recommendation)
         .returning<Recommendation>('*')
+    }
+  };
+
+  public async addOrUpdateVote(recommendation: Recommendation, user: User, vote: Vote): Promise<Vote> {
+    // If we already have a vote for that recommendation and user, its just a case of updating the type.
+    const existingVote = await knex
+    .from('votes')
+    .where('recommendation_id', recommendation.id) 
+    .where('created_by_id', user.id)
+    .first()
+    .returning<Vote>('*');
+
+    if(existingVote) { 
+      return await knex('votes')
+        .where('id', existingVote.id)
+        .update({
+          vote_type: vote.vote_type
+        })
+        .returning<Vote>('*')
+    } else {
+      vote.created_by_id = user.id;
+      vote.recommendation_id = recommendation.id;
+
+      return await knex('votes')
+        .insert(vote)
+        .returning<Vote>('*')
     }
   };
 }

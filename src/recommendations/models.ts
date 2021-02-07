@@ -13,5 +13,21 @@ const RecommendationSchema = Joi.object({
   recycling_type: Joi.string().required(),
   location: Joi.string().required()
 });
+ 
+interface Vote {
+  id: number;
+  created_by_id: number; 
+  recommendation_id: number;  
+  vote_type: string; 
+}
 
-export {Recommendation, RecommendationSchema};
+const VoteSchema = Joi.object({
+  vote_type: Joi.string().required().valid(...['up', 'down']), 
+});
+
+export {
+  Recommendation, 
+  RecommendationSchema,
+  Vote,
+  VoteSchema
+};

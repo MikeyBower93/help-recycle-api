@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express';
 import {requestTypeValidationMiddleware, RequestValidationProperty} from '../middleware';
-import {RecommendationSchema, Recommendation} from "./models"; 
+import {RecommendationSchema, Recommendation, Vote, VoteSchema} from "./models"; 
 import recommendationDomain from './domain';
 import {RecommendationQueryParameters, RecommendationQueryParametersSchema} from './dtos';
 
@@ -25,5 +25,24 @@ router.put(
     response.json(newRecommendation);
   }
 );
+
+router.put(
+  '/:recommendation_id/votes',
+  requestTypeValidationMiddleware(RequestValidationProperty.Body, VoteSchema),
+  async (request : Request<{}, {}, Vote, {}, {}>, response :Response) => {
+    const recommendationId = parseInt(request.param('recommendation_id'));
+    const recommendation = await recommendationDomain.getRecommendationById(recommendationId);
+
+    if (!recommendation) {
+      response.status(400).send();
+    } else {  
+      console.log(recommendation);
+
+      const vote = await recommendationDomain.addOrUpdateVote(recommendation, request.user, request.body);
+
+      response.json(vote);
+    }
+  }
+)
 
 export default router;
