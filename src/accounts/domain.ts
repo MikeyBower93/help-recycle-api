@@ -25,9 +25,8 @@ class Domain {
   public async findUserByEmail(email: string): Promise<User | null> {
     return await knex
     .from('users')
-    .where('email', email)
-    .returning<User | null>("*")
-    .first();
+    .where('email', email) 
+    .first<User | null>();
   }
 
   public async verifyUserByToken(token: string): Promise<{user: User | null, valid: boolean}> {

@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { User } from '../accounts/models';
 
 interface Recommendation {
   id: number;
@@ -6,6 +7,9 @@ interface Recommendation {
   instructions: string;
   recycling_type: string;
   location: string;
+  up_votes: number;
+  down_votes: number;
+  created_by: User;
 }
 
 const RecommendationSchema = Joi.object({

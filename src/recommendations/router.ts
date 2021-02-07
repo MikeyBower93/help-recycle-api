@@ -36,8 +36,6 @@ router.put(
     if (!recommendation) {
       response.status(400).send();
     } else {  
-      console.log(recommendation);
-
       const vote = await recommendationDomain.addOrUpdateVote(recommendation, request.user, request.body);
 
       response.json(vote);
