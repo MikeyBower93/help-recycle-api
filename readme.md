@@ -1,9 +1,13 @@
 # Project Description
+
+## Progress
+The API is complete (as can be seen here), no development made on the mobile app.
+
 This Help Recycle project is intended to solve the problem in the UK where there are several recycling labels, but different localities have different rules around the recycling material, thus resulting in things getting recycled when they shouldn't be, or things not being recycled when they can be.
  
 This part of the project is the API to service mobile requests. 
 
-# Project Structure
+## Project Structure
 
 At the root level we have the basic server where express is initialised, along with configuration files and basic web utilities such as middleware. The application is the vertically sliced into domains which often looks like this:
 
