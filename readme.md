@@ -3,6 +3,8 @@
 ## Progress
 The API is complete (as can be seen here), no development made on the mobile app.
 
+## Introduction
+
 This Help Recycle project is intended to solve the problem in the UK where there are several recycling labels, but different localities have different rules around the recycling material, thus resulting in things getting recycled when they shouldn't be, or things not being recycled when they can be.
  
 This part of the project is the API to service mobile requests. 
